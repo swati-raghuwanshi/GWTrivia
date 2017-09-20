@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="edu.gwu.gwtrivia.GameActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/trivia"
+        />
+
+    <Button
+        android:id="@+id/top_left_button"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:text="George Washington"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        />
+
+    <Button
+        android:id="@+id/top_right_button"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:text="John Smith"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        />
+
+    <Button
+        android:id="@+id/bottom_left_button"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:text="Abe Lincoln"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
+        />
+
+    <Button
+        android:id="@+id/bottom_right_button"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:text="Tom Jefferson"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        />
+
+</RelativeLayout>
