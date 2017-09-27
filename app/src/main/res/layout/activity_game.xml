@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.gwu.gwtrivia.GameActivity">
+    tools:context="edu.gwu.gwtrivia.activity.GameActivity">
 
     <ImageView
+        android:id="@+id/image_background"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:src="@drawable/trivia"

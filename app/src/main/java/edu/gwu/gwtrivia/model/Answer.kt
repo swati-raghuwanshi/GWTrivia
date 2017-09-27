@@ -1,7 +1,11 @@
 package edu.gwu.gwtrivia.model
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
 /**
  * Created by jared on 9/18/17.
  */
 
-data class Answer(val answer: String, val correct: Boolean)
+@Parcelize
+data class Answer(val answer: String, val correct: Boolean): Parcelable

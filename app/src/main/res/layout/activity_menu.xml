@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:gravity="center_vertical|center_horizontal"
     android:background="@color/colorPrimary"
-    tools:context="edu.gwu.gwtrivia.MenuActivity">
+    tools:context="edu.gwu.gwtrivia.activity.MenuActivity">
 
     <ImageView
         android:src="@drawable/trivia"

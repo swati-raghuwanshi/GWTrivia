@@ -99,21 +99,6 @@ object Utilities {
         return null
     }
 
-    fun queryBingForImage(query: String, context: Context): JsonObject? {
-        try {
-            return Ion.with(context).load(Constants.BING_SEARCH_URL)
-                    .addHeader("Ocp-Apim-Subscription-Key", Constants.BING_SEARCH_API_TOKEN)
-                    .addQuery("q", query)
-                    .addQuery("safeSearch", "Strict")
-                    .addQuery("mkt", "en-us")
-                    .asJsonObject().get()
-        } catch (e: Exception) {
-            Log.e(TAG, e.message)
-            return null
-        }
-
-    }
-
     fun saveReactionImage(bitmap: Bitmap, directory: File): Boolean {
         val image = File(directory, Constants.REACTION_IMAGE_FILE_NAME)
 
