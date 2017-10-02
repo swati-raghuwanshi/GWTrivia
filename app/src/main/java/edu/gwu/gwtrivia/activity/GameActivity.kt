@@ -2,6 +2,9 @@ package edu.gwu.gwtrivia.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import android.widget.Button
 import edu.gwu.gwtrivia.R
 import edu.gwu.gwtrivia.async.BingImageSearchManager
@@ -26,6 +29,9 @@ class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchComp
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_game)
+
+        //setup toolbar
+        setSupportActionBar(game_toolbar)
 
         //obtain gameData from intent
         val gameData = intent.getParcelableExtra<GameData>("gameData")
@@ -54,12 +60,21 @@ class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchComp
             it.text = ""
         }
 
+        supportActionBar?.title = "${getString(R.string.score)}: $score"
+
         image_background.setImageBitmap(null)
 
-        val correctAnswer = questions[currentQuestionIndex].correctAnswer.answer
+        if(numWrong == 3) { //game over
+            finish()
+        }
+        else { //continue playing
+            //update pointer
+            currentQuestionIndex++
+            currentQuestionIndex %= questions.size
 
-        bingImageSearchManager.search("$correctAnswer $triviaCategory")
-
+            val correctAnswer = questions[currentQuestionIndex].correctAnswer.answer
+            bingImageSearchManager.search("$correctAnswer $triviaCategory")
+        }
     }
 
     private fun displayAnswers() {
@@ -75,6 +90,31 @@ class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchComp
                 tag = answer.correct
             }
         }
+    }
+
+    fun skipPressed(item: MenuItem) {
+        toast(R.string.skip_pressed)
+
+        item.isEnabled = false
+
+        nextTurn()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.game, menu)
+
+        return true
+    }
+
+    fun buttonPressed(v: View) {
+        if(v.tag as Boolean == true) {
+            score++
+        }
+        else{
+            numWrong++
+        }
+
+        nextTurn()
     }
 
     override fun imageLoaded() {

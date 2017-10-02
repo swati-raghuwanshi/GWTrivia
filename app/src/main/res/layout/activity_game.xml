@@ -1,10 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.gwu.gwtrivia.activity.GameActivity">
+    android:orientation="vertical"
+    tools:context="edu.gwu.gwtrivia.activity.GameActivity"
+    >
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/game_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?android:attr/actionBarSize"
+        android:background="@color/colorAccent"
+        />
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
 
     <ImageView
         android:id="@+id/image_background"
@@ -17,6 +32,7 @@
         android:id="@+id/top_left_button"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
+        android:onClick="buttonPressed"
         android:text="George Washington"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
@@ -26,6 +42,7 @@
         android:id="@+id/top_right_button"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
+        android:onClick="buttonPressed"
         android:text="John Smith"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
@@ -35,6 +52,7 @@
         android:id="@+id/bottom_left_button"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
+        android:onClick="buttonPressed"
         android:text="Abe Lincoln"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
@@ -44,9 +62,11 @@
         android:id="@+id/bottom_right_button"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
+        android:onClick="buttonPressed"
         android:text="Tom Jefferson"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         />
 
 </RelativeLayout>
+</LinearLayout>
