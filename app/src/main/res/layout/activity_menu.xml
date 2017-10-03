@@ -31,4 +31,14 @@
         android:text="@string/high_score_button_text"
         />
 
+    <TextView
+        android:id="@+id/high_score"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textSize="30sp"
+        android:textColor="@android:color/white"
+        android:text = "@string/placeholder"
+        />
+
 </LinearLayout>

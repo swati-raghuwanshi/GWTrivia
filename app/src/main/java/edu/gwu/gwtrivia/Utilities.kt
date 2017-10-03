@@ -98,23 +98,4 @@ object Utilities {
         Log.e(TAG, "No image results found")
         return null
     }
-
-    fun saveReactionImage(bitmap: Bitmap, directory: File): Boolean {
-        val image = File(directory, Constants.REACTION_IMAGE_FILE_NAME)
-
-        val outStream: FileOutputStream
-        try {
-
-            outStream = FileOutputStream(image)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 90, outStream)
-
-            outStream.flush()
-            outStream.close()
-        } catch (e: Exception) {
-            Log.e(TAG, e.message)
-            return false
-        }
-
-        return true
-    }
 }
