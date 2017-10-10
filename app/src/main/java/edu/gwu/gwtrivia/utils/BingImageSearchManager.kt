@@ -1,4 +1,4 @@
-package edu.gwu.gwtrivia.async
+package edu.gwu.gwtrivia.utils
 
 import android.content.Context
 import android.util.Log

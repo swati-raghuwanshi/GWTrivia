@@ -1,4 +1,4 @@
-package edu.gwu.gwtrivia
+package edu.gwu.gwtrivia.utils
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -26,7 +26,9 @@ class PersistanceManager(context: Context) {
         }
         else {
             val scoresType = object : TypeToken<MutableList<Score>>() {}.type
-            return Gson().fromJson(scoresJson, scoresType)
+            val scores: List<Score> = Gson().fromJson(scoresJson, scoresType)
+
+            return scores.sortedByDescending { it.score }
         }
     }
 

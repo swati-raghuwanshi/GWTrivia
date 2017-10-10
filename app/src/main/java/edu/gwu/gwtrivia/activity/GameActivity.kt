@@ -1,20 +1,28 @@
 package edu.gwu.gwtrivia.activity
 
+import android.location.Location
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
+import edu.gwu.gwtrivia.utils.PersistanceManager
 import edu.gwu.gwtrivia.R
-import edu.gwu.gwtrivia.async.BingImageSearchManager
+import edu.gwu.gwtrivia.utils.BingImageSearchManager
 import edu.gwu.gwtrivia.model.GameData
 import edu.gwu.gwtrivia.model.Question
+import edu.gwu.gwtrivia.model.Score
+import edu.gwu.gwtrivia.utils.LocationDetector
 import kotlinx.android.synthetic.main.activity_game.*
 import org.jetbrains.anko.toast
 import java.util.*
 
-class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchCompletionListener {
+class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchCompletionListener, LocationDetector.LocationListener {
+    private val TAG = "GameActivity"
+
     private var questions: List<Question> = emptyList()
     private var triviaCategory: String = ""
 
@@ -25,6 +33,8 @@ class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchComp
     private var currentQuestionIndex: Int = 0
 
     private lateinit var bingImageSearchManager: BingImageSearchManager
+    private lateinit var persistanceManager: PersistanceManager
+    private lateinit var locationDetector: LocationDetector
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +61,17 @@ class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchComp
         bingImageSearchManager = BingImageSearchManager(this, image_background)
         bingImageSearchManager.imageSearchCompletionListener = this
 
+        persistanceManager = PersistanceManager(this)
+
+        locationDetector = LocationDetector(this)
+        locationDetector.locationListener = this
+
         nextTurn()
     }
 
     private fun nextTurn() {
+        showLoading(true)
+
         buttons.forEach {
             it.isEnabled = false
             it.text = ""
@@ -65,7 +82,7 @@ class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchComp
         image_background.setImageBitmap(null)
 
         if(numWrong == 3) { //game over
-            finish()
+            locationDetector.detectLocation()
         }
         else { //continue playing
             //update pointer
@@ -107,7 +124,8 @@ class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchComp
     }
 
     fun buttonPressed(v: View) {
-        if(v.tag as Boolean == true) {
+        val correct = v.tag as Boolean
+        if(correct) {
             score++
         }
         else{
@@ -117,7 +135,18 @@ class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchComp
         nextTurn()
     }
 
+    private fun showLoading(show: Boolean) {
+        if(show) {
+            progressBar.visibility = ProgressBar.VISIBLE
+        }
+        else {
+            progressBar.visibility = ProgressBar.INVISIBLE
+        }
+    }
+
     override fun imageLoaded() {
+        showLoading(false)
+
         displayAnswers()
 
         buttons.forEach {
@@ -126,6 +155,29 @@ class GameActivity : AppCompatActivity(), BingImageSearchManager.ImageSearchComp
     }
 
     override fun imageNotLoaded() {
-        toast("Image didn't load :(")
+        nextTurn()
+    }
+
+    override fun locationFound(location: Location) {
+        showLoading(false)
+
+        val score = Score(score, Date(), location.latitude, location.longitude)
+        persistanceManager.saveScore(score)
+
+        finish()
+    }
+
+    override fun locationNotFound(reason: LocationDetector.FailureReason) {
+        showLoading(false)
+
+        when(reason){
+            LocationDetector.FailureReason.TIMEOUT -> Log.d(TAG, "Location timed out")
+            LocationDetector.FailureReason.NO_PERMISSION -> Log.d(TAG, "No location permission")
+        }
+
+        val score = Score(score, Date(), null, null)
+        persistanceManager.saveScore(score)
+
+        finish()
     }
 }

@@ -5,4 +5,4 @@ import java.util.Date
  * Created by jared on 10/2/17.
  */
 
-data class Score(val score: Int, val date: Date)
+data class Score(val score: Int, val date: Date, val latitude: Double?, val longitude: Double?)
