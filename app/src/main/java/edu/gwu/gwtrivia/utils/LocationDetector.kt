@@ -45,6 +45,8 @@ class LocationDetector(val context: Context) {
 
         //if location permission granted, proceed with location detection
         if(permissionResult == android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            //create timer
+            val timer = Timer()
 
             //create location detection callback
             val locationCallback = object : LocationCallback() {
@@ -52,13 +54,15 @@ class LocationDetector(val context: Context) {
                     //stop location updates
                     fusedLocationClient.removeLocationUpdates(this)
 
+                    //cancel timer
+                    timer.cancel()
+
                     //fire callback with location
                     locationListener?.locationFound(locationResult.locations.first())
                 }
             }
 
             //start a timer to ensure location detection ends after 10 seconds
-            val timer = Timer()
             timer.schedule(timerTask {
                 //if timer expires, stop location updates and fire callback
                 fusedLocationClient?.removeLocationUpdates(locationCallback)
