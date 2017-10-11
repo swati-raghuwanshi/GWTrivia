@@ -24,7 +24,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.GameActivity" />
-        <activity android:name=".activity.ScoresActivity" />
+        <activity android:name=".activity.ScoresActivity"
+            android:label="@string/title_activity_scores"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -39,7 +40,7 @@
 
         <activity
             android:name=".activity.MapActivity"
-            android:label="@string/title_activity_map"></activity>
+            android:label="@string/title_activity_map"/>
     </application>
 
 </manifest>
