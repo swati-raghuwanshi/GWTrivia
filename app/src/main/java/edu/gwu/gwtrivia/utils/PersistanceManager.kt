@@ -20,11 +20,15 @@ class PersistanceManager(context: Context) {
     }
 
     fun fetchScores(): List<Score> {
+        //obtain JSON string of scores array
         var scoresJson = sharedPreferences.getString(Constants.SCORES_PREF_KEY, null)
+
+        //if null, this means no previous scores, so create an empty array list
         if(scoresJson == null) {
             return arrayListOf<Score>()
         }
         else {
+            //existing scores, so convert the scores JSON string into Score objects, using Gson
             val scoresType = object : TypeToken<MutableList<Score>>() {}.type
             val scores: List<Score> = Gson().fromJson(scoresJson, scoresType)
 
@@ -33,9 +37,13 @@ class PersistanceManager(context: Context) {
     }
 
     fun saveScore(score: Score) {
+        //fetch existing scores
         val scores = fetchScores().toMutableList()
+
+        //add new score to it
         scores.add(score)
 
+        //persist to shared preferences
         val editor = sharedPreferences.edit()
         editor.putString(Constants.SCORES_PREF_KEY, Gson().toJson(scores))
 
@@ -43,6 +51,7 @@ class PersistanceManager(context: Context) {
     }
 
     fun highScore(): Score? {
+        //fetch scores
         val scores = fetchScores()
 
         return scores.sortedByDescending { it.score }.firstOrNull()

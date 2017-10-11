@@ -16,12 +16,14 @@ class BingImageSearchManager(val context: Context, val imageView: ImageView) {
     private val TAG = "BingImageSearchManager"
     var imageSearchCompletionListener: ImageSearchCompletionListener? = null
 
+    //define interface to handle image search callbacks
     interface ImageSearchCompletionListener {
         fun imageLoaded()
         fun imageNotLoaded()
     }
 
     fun search(query: String) {
+        //utiliaize Ion to make HTTP request
         Ion.with(context).load(Constants.BING_SEARCH_URL)
                 .addHeader("Ocp-Apim-Subscription-Key", Constants.BING_SEARCH_API_TOKEN)
                 .addQuery("q", query)
@@ -29,16 +31,21 @@ class BingImageSearchManager(val context: Context, val imageView: ImageView) {
                 .addQuery("mkt", "en-us")
                 .asJsonObject()
                 .setCallback(FutureCallback { error, result ->
+                    //upon error, fire fail callback
                     error?.let {
                         Log.e(TAG, it.toString())
                         //fail - Network request to Bing failed
                         imageSearchCompletionListener?.imageNotLoaded()
                     }
 
+                    //upon success
                     result?.let {
+                        //check orientation of device
                         val orientation = context.resources.configuration.orientation
+                        //parse url of ideal image from JSON
                         val url = Utilities.parseURLFromBingJSON(it,orientation)
 
+                        //if image url is found, load it into the activity's imageView
                         if(url != null) {
                             Ion.with(imageView).load(url.toString()).setCallback { error, result ->
                                 if(error != null) {
@@ -56,7 +63,6 @@ class BingImageSearchManager(val context: Context, val imageView: ImageView) {
                             imageSearchCompletionListener?.imageNotLoaded()
                         }
                     }
-
                 })
     }
 }

@@ -22,6 +22,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_map)
 
+        //initialize peristance manager
         persistanceManager = PersistanceManager(this)
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -41,20 +42,25 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         map = googleMap
+
+        //create builder so we can create bounds that include each lat/lng point
         val builder = LatLngBounds.Builder()
 
+        //fetch scores
         val scores = persistanceManager.fetchScores()
 
-
+        //for each score, if there is a lat/lng, create a marker and add to map
         for(score in scores){
             if(score.latitude != null && score.longitude != null) {
                 val latLng = LatLng(score.latitude,score.longitude)
                 map.addMarker(MarkerOptions().position(latLng).title("${getString(R.string.score)}: ${score.score}"))
 
+                //add point to builder
                 builder.include(latLng)
             }
         }
 
+        //create bounds from builder, update camera with bounds, and move camera to bounded area
         val bounds = builder.build()
         val cameraUpdate = CameraUpdateFactory.newLatLngBounds(bounds, 0)
         map.moveCamera(cameraUpdate)

@@ -14,8 +14,10 @@ import edu.gwu.gwtrivia.model.Score
 class ScoresAdapter(private val scores: List<Score>) : RecyclerView.Adapter<ScoresAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder?, position: Int) {
+        //obtain score at position
         val score = scores?.get(position)
 
+        //bind score to view holder
         score?.let {
             (holder as ViewHolder).bind(score)
         }
@@ -27,18 +29,16 @@ class ScoresAdapter(private val scores: List<Score>) : RecyclerView.Adapter<Scor
 
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): ViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
+
+        //inflate our score row layout
         return ViewHolder(layoutInflater.inflate(R.layout.row_score, parent, false))
     }
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val scoreTextView: TextView
-        private val dateTextView: TextView
+        private val scoreTextView: TextView = view.findViewById(R.id.score)
+        private val dateTextView: TextView = view.findViewById(R.id.date)
 
-        init {
-            scoreTextView = view.findViewById(R.id.score)
-            dateTextView = view.findViewById(R.id.date)
-        }
-
+        //update score row ui with score and date
         fun bind(score: Score) {
             scoreTextView.text = score.score.toString()
             dateTextView.text = score.date.toString()

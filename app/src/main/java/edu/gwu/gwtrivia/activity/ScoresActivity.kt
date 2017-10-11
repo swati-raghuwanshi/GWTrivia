@@ -24,16 +24,22 @@ class ScoresActivity : AppCompatActivity() {
         //setup toolbar
         setSupportActionBar(scores_toolbar)
 
+        //initialize persistance manager
         persistanceManager = PersistanceManager(this)
+
+        //fetch scores
         val scores = persistanceManager.fetchScores()
 
+        //initialize adapter with scores
         scoresAdapter = ScoresAdapter(scores)
 
+        //setup recycler view's layout manager and adapter
         recycler_view.layoutManager = LinearLayoutManager(this)
         recycler_view.adapter = scoresAdapter
     }
 
     fun showMap(item: MenuItem) {
+        //take user to map activity
         val intent = Intent(this, MapActivity::class.java)
         startActivity(intent)
     }

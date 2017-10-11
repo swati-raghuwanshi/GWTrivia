@@ -24,6 +24,7 @@ import java.util.Random
 object Utilities {
     private const val TAG = "Utilities"
 
+    //given a filename, read contents as a string
     fun AssetManager.fileAsString(filename: String): String {
         return open(filename).use {
             it.readBytes().toString(Charset.defaultCharset())
@@ -37,6 +38,7 @@ object Utilities {
         val randomGenerator = Random()
 
         try {
+            //read csv file as a string, then parse out new lines to generate question/answer data
             val csvString = context.assets.fileAsString(fileName)
             val lines = csvString.split(",\r".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
 
@@ -72,6 +74,7 @@ object Utilities {
     }
 
     fun parseURLFromBingJSON(jsonObject: JsonObject, desiredOrientation: Int): URL? {
+        //parse through JSON to obtain an image url that meets criteria: not too large, and correct orientation
         val imageResults = jsonObject.getAsJsonArray("value")
         if (imageResults != null && imageResults.size() > 0) {
             for (i in 0..imageResults.size() - 1) {

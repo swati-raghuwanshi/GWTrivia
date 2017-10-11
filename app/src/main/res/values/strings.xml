@@ -9,4 +9,5 @@
     <string name="high_score">High Score</string>
     <string name="title_activity_map">Map</string>
     <string name="map">Map</string>
+    <string name="permission_declined">Location permission not granted, scores saved will not include location</string>
 </resources>
